@@ -35,8 +35,16 @@ export default class RectangleDistortion extends Distortion {
             newMirrorImage.fill = image.fill;
             newMirrorImage.stroke = image.stroke;
             return newMirrorImage;
-        } else {
+        } else if(image instanceof Rectangle) {
             return image;
+        } else if(image instanceof Star) {
+            let newMirrorImage = new Rectangle(
+                {x: image.x, y: image.y},
+                image.outerRadius, image.outerRadius
+            )
+            newMirrorImage.fill = image.fill;
+            newMirrorImage.stroke = image.stroke;
+            return newMirrorImage;
         }
     }
 }

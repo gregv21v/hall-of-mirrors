@@ -21,6 +21,11 @@ export default class Rectangle extends Shape {
 	}
 
 
+	/**
+	 * draw()
+	 * @description draws the rectangle
+	 * @param {CanvasRenderingContext2D} context the context to draw to
+	 */
     draw(context) {
         super.draw(context);
         context.fillRect(this._position.x, this._position.y, this._width, this._height);

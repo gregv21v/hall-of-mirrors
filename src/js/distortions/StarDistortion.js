@@ -1,4 +1,6 @@
+import Circle from "../shapes/Circle";
 import Rectangle from "../shapes/Rectangle";
+import Star from "../shapes/Star";
 import Distortion from "./Distortion";
 
 
@@ -27,14 +29,28 @@ export default class StarDistortion extends Distortion {
         if(image == null) return null;
 
         if(image instanceof Circle) {
-            let newMirrorImage = new Rectangle(
+            let newMirrorImage = new Star(
                 {...image.position},
-                image.radius, image.radius
+                5, image.radius / 2,
+                image.radius
             )
+
             newMirrorImage.fill = image.fill;
             newMirrorImage.stroke = image.stroke;
-            return image;
+
+            return newMirrorImage;
         } else if(image instanceof Rectangle) {
+            let newMirrorImage = new Star(
+                {x: image.x + image.width / 2, y: image.y + image.height / 2},
+                5, image.width / 2,
+                image.width / 2
+            )
+
+            newMirrorImage.fill = image.fill;
+            newMirrorImage.stroke = image.stroke;
+
+            return newMirrorImage;
+        } else if(image instanceof Star) {
             return image;
         }
     }

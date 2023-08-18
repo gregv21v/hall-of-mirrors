@@ -40,7 +40,7 @@ export default class Room extends Rectangle {
         context.fillStyle = 'black';
         context.font = "30px Arial";
         context.fillText(this._name, this._position.x + this._width / 2, this._position.y + this._height / 2)
-        context.fillText(this._disorder, this._position.x + this._width / 2, this._position.y + this._height / 2 + 30)
+        //context.fillText(this._disorder, this._position.x + this._width / 2, this._position.y + this._height / 2 + 30)
     }
 
 

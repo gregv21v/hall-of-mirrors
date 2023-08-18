@@ -2,6 +2,7 @@ import Player from "../Player";
 import FillDistortion from "../distortions/FillDistortion";
 import RectangleDistortion from "../distortions/RectangleDistortion";
 import SizeDistortion from "../distortions/SizeDistortion";
+import StarDistortion from "../distortions/StarDistortion";
 import StrokeDistortion from "../distortions/StrokeDistortion";
 import { getRandomInt, swap } from "../util";
 import Room from "./Room";
@@ -26,11 +27,14 @@ export default class Maze {
         this._currentRoom = this._rooms[0];
         this._startRoom = this._rooms[0];
 
+        // distortions are ordered in such a way that the 
+        // more apparent ones come last
         this._avaliableDistortions = [
+            new StrokeDistortion("pink"),
             new FillDistortion("blue"),
+            new SizeDistortion(0.5),
             new RectangleDistortion(),
-            new SizeDistortion(0.2),
-            new StrokeDistortion("pink")
+            new StarDistortion()
         ]
 
 
@@ -102,15 +106,18 @@ export default class Maze {
             
             if (avaliableDoors[rand] === "north") {
                 northRooms.push(this._rooms[i]);
+                avaliableDoors = swap(avaliableDoors, avaliableDoors.indexOf("south"), 3)
             } else if (avaliableDoors[rand] === "east") {
                 eastRooms.push(this._rooms[i]);
+                avaliableDoors = swap(avaliableDoors, avaliableDoors.indexOf("west"), 3)
             } else if (avaliableDoors[rand] === "south") {
                 southRooms.push(this._rooms[i]);
+                avaliableDoors = swap(avaliableDoors, avaliableDoors.indexOf("north"), 3)
             } else if (avaliableDoors[rand] === "west") {
                 westRooms.push(this._rooms[i]);
+                avaliableDoors = swap(avaliableDoors, avaliableDoors.indexOf("east"), 3)
             }
 
-            avaliableDoors = swap(avaliableDoors, rand, 3);
         }
         this._endRoom = currentRoom;
         this._endRoom.fill.color = "rgb(0, 255, 255)";
