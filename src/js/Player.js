@@ -1,0 +1,22 @@
+import Circle from "./shapes/Circle";
+
+export default class Player extends Circle {
+
+
+    /**
+     * constructor()
+     * @description constructs the player 
+     * @param {Point} center the center of the circle
+     * @param {Point} radius the radius of the circle
+     */
+    constructor(center, radius) {
+        super(center, radius);
+        this._fill.color = "red"
+    }
+
+    createImage() {
+        let image = new Circle({...this._position}, this._radius);
+		image.fill.color = this.fill.color;
+		return image;
+    }
+}
