@@ -1,4 +1,5 @@
 import Distortion from "../distortions/Distortion";
+import Group from "../shapes/Group";
 import Rectangle from "../shapes/Rectangle";
 
 
@@ -85,63 +86,61 @@ export default class Mirror extends Rectangle {
         context.save();
         context.rect(this._position.x, this._position.y, this._width, this._height);
         context.clip();
-        if(this._mirrorImage) this._mirrorImage.draw(context);
+        if(this._imageGroup) this._imageGroup.draw(context);
 
         context.restore(); 
     }
 
 
     update() {
-        let outOfXRange = false;
-        let outOfYRange = false;
+        let xInRange = (this._room.player.position.x > this.x && this._room.player.position.x < this.x + this._width);
+        let yInRange = (this._room.player.position.y > this.y && this._room.player.position.y < this.y + this._height);
 
         // if the player is within the x range or y range of the mirror
         // display the player on the mirror at a size proportional to the
         // distance from the mirror
 
         this._mirrorImage = this._room.player.createImage(); // the mirror image of the player
+        this._imageGroup = new Group();
+        this._imageGroup.add(this._mirrorImage, "player");
 
+        let heightScaleRatio = this._height / this._room.height;
+        let widthScaleRatio = this._width / this._room.width;
+
+        let mirrorPosition = {
+            x: widthScaleRatio * this._wall.xDistanceTo(this._room.player.position.x),
+            y: heightScaleRatio * this._wall.yDistanceTo(this._room.player.position.y) 
+        }
+
+        let scalingFactor = {
+            x: Math.abs(this._width - mirrorPosition.x) / this._width,
+            y: Math.abs(this._height - mirrorPosition.y) / this._height
+        }
+
+        if(xInRange) {
+            this._imageGroup.scale(scalingFactor.y);
+            this._imageGroup.moveTo(
+                this._imageGroup.center.x,
+                this.y + ((this._wall.side === "north") ? (this._height - mirrorPosition.y) : mirrorPosition.y)
+            )
+        }
         
-        if(
-            this._room.player.position.x > this.x && 
-            this._room.player.position.x < this.x + this._width
-        ) {
-            let scaleRatio = this._height / this._room.height;
-            let yOnMirror = scaleRatio * this._wall.yDistanceTo(this._room.player.position.y) 
-            let scalingFactor = Math.abs(this._height - yOnMirror) / this._height
-            this._mirrorImage.scale(scalingFactor);
-            this._mirrorImage.position.y = this.y + ((this._wall.side === "north") ? (this._height-yOnMirror) : yOnMirror)
-        } else {
-            outOfXRange = true
-        }   
-
-        if(
-            this._room.player.position.y > this.y && 
-            this._room.player.position.y < this.y + this._height
-        ) {
-            let scaleRatio = this._width / this._room.width;
-            let xOnMirror = scaleRatio * this._wall.xDistanceTo(this._room.player.position.x)
-
-            let scalingFactor = (this._width - xOnMirror) / this._width
-            
-            this._mirrorImage.scale(scalingFactor);
-            
-            this._mirrorImage.position.x = this.x + ((this._wall.side === "west") ? (this._width - xOnMirror) : xOnMirror)
-        } else {
-            outOfYRange = true;
+        if(yInRange) {
+            this._imageGroup.scale(scalingFactor.x);
+            this._imageGroup.moveTo(
+                this.x + ((this._wall.side === "west") ? (this._width - mirrorPosition.x) : mirrorPosition.x),
+                this._imageGroup.center.y
+            )
         }
 
-        if(outOfXRange && outOfYRange) {
-            this._mirrorImage = null;
-        }
+        if(!xInRange && !yInRange) {
+            this._imageGroup = null;
+        } 
 
 
         // apply distortions
         for (const distortion of this._distortions) {
-            this._mirrorImage = distortion.apply(this, this._mirrorImage);
+            distortion.apply(this, this._imageGroup);
         }
-
-        
-
     }
 }

@@ -1,14 +1,15 @@
 import Circle from "../shapes/Circle";
+import Group from "../shapes/Group";
 import Rectangle from "../shapes/Rectangle";
-import Star from "../shapes/Star";
 import Distortion from "./Distortion";
 
 
 
+
 /**
- * StarDistortion - a distortion that effects size of objects in mirrors
+ * ShadowDistortion - a distortion that effects size of objects in mirrors
  */
-export default class StarDistortion extends Distortion {
+export default class ShadowDistortion extends Distortion {
 
     /**
      * constructor()
@@ -26,18 +27,18 @@ export default class StarDistortion extends Distortion {
      * @param {Group} group the group in the mirror to apply to
      */
     apply(mirror, group) {
-        if(image == null) return null;
+        if(group == null) return group;
 
         let player = group.objects["player"];
-        let star = new Star(
-            {...player.position},
-            5, player.radius / 2,
+        let shadow = new Circle(
+            {x: player.x - player.radius * 2, y: player.y - player.radius * 2},
             player.radius
         )
+        shadow.fill.color = "black";
+        shadow.stroke.color = "black";
+        group.drawOrder = ["shadow", "player"]
+        group.add(shadow, "shadow")
 
-        star.fill = player.fill;
-        star.stroke = player.stroke;
-
-        group.add(star, "star")
+        console.log(group);
     }
 }

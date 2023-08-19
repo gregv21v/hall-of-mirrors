@@ -9,6 +9,7 @@ export default class Group {
     constructor() {
         this._position = {x: 0, y: 0};
         this._objects = {}; // shapes within the group
+        this._drawOrder = []; // the order in which objects are rendered
     }
 
 
@@ -52,10 +53,23 @@ export default class Group {
     /**
      * draw()
      * @description draws the objects in the group
+     * @param {CanvasRenderingContext2D} context the context to draw to
      */
     draw(context) {
-        for (const obj of Object.values(this._objects)) {
-            obj.draw(context)
+        if(this._drawOrder.length === 0) {
+            for (const obj of Object.values(this._objects)) {
+                obj.draw(context)
+            }
+        } else {
+            for (const key of this._drawOrder) {
+                this._objects[key].draw(context)
+            }
+
+            for (const key of Object.keys(this._objects)) {
+                if(!this._drawOrder.includes(key)) {
+                    this._objects[key].draw(context)
+                }
+            }
         }
     }
 
@@ -82,6 +96,10 @@ export default class Group {
         //shape.y = this.position.y + y;
         this._objects[name] = shape;
     }
+
+
+
+
 
     
 
@@ -204,13 +222,7 @@ export default class Group {
 	 */
 	scale(amount) {
         for (const obj of Object.values(this._objects)) {
-            //let originalPosition = obj.position;
-
-            //obj.moveTo(this.center.x, this.center.y);
             obj.scale(amount);
-            //obj.moveTo(originalPosition.x, originalPosition.y);
-
-
         }
 	}
 
@@ -387,9 +399,9 @@ export default class Group {
 
 
 	/**
-	 * get x()
-	 * @description gets the x position of the shape
-	 * @returns the x position of the shape
+	 * get y()
+	 * @description gets the y position of the shape
+	 * @returns the y position of the shape
 	 */
 	get y() {
 		return this._position.y;
@@ -405,8 +417,22 @@ export default class Group {
 	}
 
 
-
+    /**
+     * set drawOrder()
+     * @description sets the drawOrder
+     * @param {Number} value the value to set drawOrder to 
+     */
+    set drawOrder(value) {
+        this._drawOrder = value;
+    }
     
-
+    /**
+	 * get drawOrder()
+	 * @description gets the drawOrder position of the shape
+	 * @returns the drawOrder position of the shape
+	 */
+	get drawOrder() {
+		return this._drawOrder;
+	}
 
 }

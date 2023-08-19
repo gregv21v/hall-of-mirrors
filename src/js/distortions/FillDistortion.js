@@ -19,10 +19,10 @@ export default class FillDistortion extends Distortion {
      * apply()
      * @description apply this distortion
      * @param {Mirror} mirror the mirror to apply to
-     * @param {MirrorImage} image the image in the mirror to apply to
+     * @param {Group} group the group in the mirror to apply to
      */
-    apply(mirror, image) {
-        if(image) image.fill.color = this._fill;
-        return image;
+    apply(mirror, group) {
+        if(group) group.objects["player"].fill.color = this._fill;
+        return group;
     }
 }

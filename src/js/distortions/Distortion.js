@@ -10,10 +10,9 @@ export default class Distortion {
      * apply()
      * @description apply this distortion
      * @param {Mirror} mirror the mirror to apply to
-     * @param {MirrorImage} image the image in the mirror to apply to
-     * @returns {MirrorImage} the new image 
+     * @param {Group} group the group in the mirror to apply to
      */
-    apply(mirror, image) {
-        return image;
+    apply(mirror, group) {
+        return group;
     }
 }

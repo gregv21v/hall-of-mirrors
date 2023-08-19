@@ -111,7 +111,6 @@ export default class Wall extends Group {
             return Math.abs(this._wall.y - y)
         }
 
-        console.warn("Side Not valid: " + this._side);
         return 0;
     }
 

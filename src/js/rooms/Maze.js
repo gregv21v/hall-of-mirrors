@@ -1,6 +1,7 @@
 import Player from "../Player";
 import FillDistortion from "../distortions/FillDistortion";
 import RectangleDistortion from "../distortions/RectangleDistortion";
+import ShadowDistortion from "../distortions/ShadowDistortion";
 import SizeDistortion from "../distortions/SizeDistortion";
 import StarDistortion from "../distortions/StarDistortion";
 import StrokeDistortion from "../distortions/StrokeDistortion";
@@ -30,6 +31,7 @@ export default class Maze {
         // distortions are ordered in such a way that the 
         // more apparent ones come last
         this._avaliableDistortions = [
+            new ShadowDistortion(),
             new StrokeDistortion("pink"),
             new FillDistortion("blue"),
             new SizeDistortion(0.5),

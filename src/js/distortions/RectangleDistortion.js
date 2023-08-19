@@ -1,6 +1,8 @@
+import Group from "../shapes/Group";
 import Circle from "../shapes/Circle";
 import Rectangle from "../shapes/Rectangle";
 import Distortion from "./Distortion";
+
 
 
 
@@ -22,29 +24,19 @@ export default class RectangleDistortion extends Distortion {
      * apply()
      * @description apply this distortion
      * @param {Mirror} mirror the mirror to apply to
-     * @param {MirrorImage} image the image in the mirror to apply to
+     * @param {Group} group the group in the mirror to apply to
      */
-    apply(mirror, image) {
-        if(image == null) return image;
+    apply(mirror, group) {
+        if(group == null) return group;
 
-        if(image instanceof Circle) {
-            let newMirrorImage = new Rectangle(
-                {x: image.x - image.radius, y: image.y - image.radius},
-                image.radius * 2, image.radius * 2
-            )
-            newMirrorImage.fill = image.fill;
-            newMirrorImage.stroke = image.stroke;
-            return newMirrorImage;
-        } else if(image instanceof Rectangle) {
-            return image;
-        } else if(image instanceof Star) {
-            let newMirrorImage = new Rectangle(
-                {x: image.x, y: image.y},
-                image.outerRadius, image.outerRadius
-            )
-            newMirrorImage.fill = image.fill;
-            newMirrorImage.stroke = image.stroke;
-            return newMirrorImage;
-        }
+        let player = group.objects["player"];
+        console.log(player);
+        let rect = new Rectangle(
+            {x: group.center.x - player.radius, y: group.center.y - player.radius},
+            player.radius * 2, player.radius * 2
+        )
+        rect.fill = player.fill;
+        rect.stroke = player.stroke;
+        group.add(rect, "rectangle")
     }
 }

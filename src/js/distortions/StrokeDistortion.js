@@ -19,10 +19,10 @@ export default class StrokeDistortion extends Distortion {
      * apply()
      * @description apply this distortion
      * @param {Mirror} mirror the mirror to apply to
-     * @param {MirrorImage} image the image in the mirror to apply to
+     * @param {Group} group the group in the mirror to apply to
      */
-    apply(mirror, image) {
-        if(image) image.stroke.color = this._color;
-        return image;
+    apply(mirror, group) {
+        if(group) group.objects["player"].stroke.color = this._color;
+        return group;
     }
 }
