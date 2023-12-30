@@ -26,7 +26,7 @@ export default class StarDistortion extends Distortion {
      * @param {Group} group the group in the mirror to apply to
      */
     apply(mirror, group) {
-        if(image == null) return null;
+        if(group == null) return null;
 
         let player = group.objects["player"];
         let star = new Star(

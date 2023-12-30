@@ -24,7 +24,7 @@ export default class Maze {
         this._roomPosition = roomPosition;
         this._roomSize = roomSize;
         this._player = player;
-        this._rooms = this.createRandomRooms(20);
+        this._rooms = this.createRandomRooms(15);
         this._currentRoom = this._rooms[0];
         this._startRoom = this._rooms[0];
 

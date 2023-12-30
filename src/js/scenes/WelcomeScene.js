@@ -17,6 +17,7 @@ export default class WelcomeScene extends Scene {
             "The mirrors closer to the end room will more",
             "and more different from what you'd expect to see in a mirror.",
             "Use the WASD keys to navigate the rooms.",
+            "There are 15 rooms total. The last room will be label end",
             "Press start to begin."
         ]
     }
